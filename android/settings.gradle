@@ -17,7 +17,17 @@ dependencyResolutionManagement {
 rootProject.name = 'pro_camera_app_android'
 include ':app'
 
-apply from: new File(
-  settings.pluginManagement.resolutionStrategy.eachPlugin.find { it.requested.id.id == 'dev.flutter.flutter-gradle-plugin' }.origin.location,
-  'flutter.groovy'
-)
+def localProperties = new Properties()
+def localPropertiesFile = new File(rootProject.projectDir.parentFile, 'local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterSdkPath = localProperties.getProperty('flutter.sdk')
+if (flutterSdkPath == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+apply from: "$flutterSdkPath/packages/flutter_tools/gradle/flutter.groovy"
