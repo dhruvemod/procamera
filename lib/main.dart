@@ -137,7 +137,6 @@ class CameraScreenState extends State<CameraScreen> {
   bool _showProControls = false;
   double _minZoom = 1.0, _maxZoom = 1.0, _currentZoom = 1.0;
   double _minExposure = 0.0, _maxExposure = 0.0, _currentExposure = 0.0;
-  WhiteBalanceMode _whiteBalancePreset = WhiteBalanceMode.auto;
   Offset? _focusPoint;
   Timer? _focusPointTimer;
 
@@ -247,10 +246,6 @@ class CameraScreenState extends State<CameraScreen> {
     _controller.setExposureOffset(exposure);
   }
 
-  void _onWhiteBalancePressed(WhiteBalancePreset preset) {
-    setState(() => _whiteBalancePreset = preset);
-    _controller.setWhiteBalancePreset(preset);
-  }
 
   Future<void> _onTapToFocus(TapUpDetails details) async {
     if(!_controller.value.isInitialized || !_showProControls) return;
@@ -372,21 +367,6 @@ class CameraScreenState extends State<CameraScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Visibility(
-            visible: _showProControls,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: WhiteBalanceMode.values.map((preset) =>
-                  ChoiceChip(
-                    label: Text(preset.toString().split('.').last),
-                    selected: _whiteBalancePreset == preset,
-                    onSelected: (_) => _onWhiteBalancePressed(preset),
-                  )
-                ).toList(),
-              ),
-            ),
-          ),
           ToggleButtons(
             isSelected: [_mode == CameraMode.photo, _mode == CameraMode.video],
             onPressed: (index) => setState(() => _mode = index == 0 ? CameraMode.photo : CameraMode.video),
