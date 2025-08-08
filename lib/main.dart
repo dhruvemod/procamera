@@ -137,7 +137,7 @@ class CameraScreenState extends State<CameraScreen> {
   bool _showProControls = false;
   double _minZoom = 1.0, _maxZoom = 1.0, _currentZoom = 1.0;
   double _minExposure = 0.0, _maxExposure = 0.0, _currentExposure = 0.0;
-  WhiteBalancePreset _whiteBalancePreset = WhiteBalancePreset.auto;
+  WhiteBalanceMode _whiteBalancePreset = WhiteBalanceMode.auto;
   Offset? _focusPoint;
   Timer? _focusPointTimer;
 
@@ -377,7 +377,7 @@ class CameraScreenState extends State<CameraScreen> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: WhiteBalancePreset.values.map((preset) =>
+                children: WhiteBalanceMode.values.map((preset) =>
                   ChoiceChip(
                     label: Text(preset.toString().split('.').last),
                     selected: _whiteBalancePreset == preset,
